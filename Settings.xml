@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<Settings>
+    <PACLI>
+        <Folder>C:\PACLI</Folder>
+        <Username>Administrator</Username>
+        <CredFile>C:\PACLI\user.ini</CredFile>
+    </PACLI>
+    <Vault>
+        <Name>TEST</Name>
+        <Address>10.0.0.10</Address>
+        <Safe>PasswordManager_info</Safe>
+    </Vault>
+    <SQL>
+        <Server>SERVER\INSTANCE</Server>
+        <Database>database</Database>
+        <Table>capolicies</Table>
+        <Username>sqlUsername</Username>
+        <Password>Password123</Password>
+        <Column>
+            <PolicyID>capolicyid</PolicyID>
+            <PolicyName>caplatformname</PolicyName>
+        </Column>
+    </SQL>
+</Settings>
