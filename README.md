@@ -1,4 +1,4 @@
-# CAPolicySQLDump
+# PolicySQLDump
 Takes PolicyID and PolicyName from every file in the PasswordManager_info safe and INSERT INTO capolicies table in mssql to cols caPolicyID and caPlatformName.
 
 ## Pre-Requisites
