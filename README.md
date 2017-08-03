@@ -7,7 +7,7 @@ Takes PolicyID and PolicyName from every file in the PasswordManager_info safe a
 * `git clone https://github.com/psPete/PoShPACLI.git` into `C:\Windows\system32\WindowsPowerShell\v1.0\Modules`
     * This will add the [PoShPACLI](https://github.com/psPete/PoShPACLI) PowerShell Module for PACLI into the proper directory. 
 * Install CyberArk PACLI into `C:\PACLI` on the local machine this script is run from.
-    * If you install to a different location, please update the variable in the .ps1 file.
+    * If you install to a different location, please update the parameter in the `Settings.xml` file.
 * Create a user.ini credential file to be used for authentication to prevent passing plaintext passwords. (See [Troubleshooting](#troubleshooting) section for help.)
     * Browse into CreateCredFile directory.
     * Shift+Right Click in whitespace in the directory, select `Open command window here`. (May need to run in escalated cmd prompt.)
