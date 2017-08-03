@@ -1,4 +1,7 @@
 # PolicySQLDump
+
+[![CyberArk Ready](https://img.shields.io/badge/CyberArk-ready-blue.svg)](https://www.cyberark.com)[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/mit-license.php)
+
 Takes PolicyID and PolicyName from every file in the PasswordManager_info safe and INSERT INTO capolicies table in mssql to cols caPolicyID and caPlatformName.
 
 ## Pre-Requisites
