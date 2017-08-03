@@ -75,6 +75,22 @@ else {Write-Host "[ ${vaultSafe} Safe Opened ]" -ForegroundColor Yellow}
 ## Revert to CLI PACLI to use FILESLIST correctly and retrieve all filenames from safe
 $filesList = C:\PACLI\PACLI.exe FILESLIST VAULT='TEST' USER='Administrator' SAFE='PasswordManager_info' FOLDER='Root\Policies' OUTPUT'(NAME)'
 
+## Begin SQL Connection outside of loop
+    try {
+        $sqlConnection = New-Object System.Data.SqlClient.SqlConnection
+        $sqlConnection.ConnectionString = "Server=${sqlServer};Database=${sqlDatabase};Integrated Security=False; User ID=${sqlUsername}; Password=${sqlPassword};"
+        $sqlConnection.Open()
+        if ($sqlConnection.State -ne [Data.ConnectionState]::Open) {
+            Write-Host "Connection to the server\instance ${sqlServer} or database ${sqlDatabase} could not be established." -ForegroundColor Red
+            break
+        }
+    }
+    catch {
+        Write-Host "Errors occurred during SQL connection." -ForegroundColor Red
+        $errColor = "Red"
+        break
+    }
+
 ## Loop through each file given back
 foreach ($file in $filesList) {
     ## Increment counter
@@ -104,28 +120,16 @@ foreach ($file in $filesList) {
     $sqlQuery = "INSERT INTO ${sqlTable} (${sqlPolIDCol},${sqlPolNameCol}) VALUES ('${PolicyID}','${PolicyName}'); "
 
     try {
-        ## Begin SQL Connection
-        $sqlConnection = New-Object System.Data.SqlClient.SqlConnection
-        $sqlConnection.ConnectionString = "Server=${sqlServer};Database=${sqlDatabase};Integrated Security=False; User ID=${sqlUsername}; Password=${sqlPassword};"
-        $sqlConnection.Open()
-        if ($sqlConnection.State -ne [Data.ConnectionState]::Open) {
-            Write-Host "Connection to the server\instance ${sqlServer} or database ${sqlDatabase} could not be established." -ForegroundColor Red
-            break
-        }
 
         ## Send SQL Query
         $sqlCmd = New-Object System.Data.SqlClient.SqlCommand
         $sqlCmd.Connection = $sqlConnection
         $sqlCmd.CommandText = $sqlQuery
 
-        ## Close SQL Connection
-        if (sqlConnection.State -eq [Data.ConnectionState]::Open) {
-            $sqlConnection.Close()
-        }
     }
     ## If error occurs, do below
     catch {
-        Write-Host "Errors occurred during SQL connection/query execution." -ForegroundColor Red
+        Write-Host "Errors occurred during SQL query execution." -ForegroundColor Red
         $errColor = "Red"
         break
     }
@@ -136,6 +140,11 @@ foreach ($file in $filesList) {
 
     ## Remove variables before loop to ensure empty variables
     Remove-Variable -Name getFile, fileReceived, PolicyID, PolicyName
+}
+
+## Close SQL Connection
+if (sqlConnection.State -eq [Data.ConnectionState]::Open) {
+    $sqlConnection.Close()
 }
 
 ## Close safe after using
